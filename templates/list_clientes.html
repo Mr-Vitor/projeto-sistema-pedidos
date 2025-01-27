@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Clientes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='list_clientes.css') }}">
+</head>
+<body>
+    <main>
+        <header class="main-header">
+            <h1>Gerenciador de Clientes</h1>
+        </header>
+
+        <section class="actions">
+            <a href="http://127.0.0.1:5000/cli_cad">Cadastrar Cliente</a>
+            <div class="filter">
+                <label for="nome_cli">Nome:</label>
+                <input type="text" id="nome_cli" name="nome_cli" placeholder="Buscar...">
+
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" placeholder="Buscar..."> 
+
+                <label for="telefone">Telefone:</label>
+                <input type="tel" id="telefone" name="telefone" placeholder="Buscar...">
+
+                <label for="endereco">Endereço:</label>
+                <input type="text" id="endereco" name="endereco" placeholder="Buscar...">
+
+                <button type="submit">Filtrar</button>
+            </div>
+        </section>
+
+        <section class="cd">
+            <label>Exibir lista de clientes, ordenando pelo nome</label>
+            <select id="periodo-top-produtos" name="periodo_top_produtos">
+                <option>Crecente</option>
+                <option>Decrecente</option>
+            </select>
+        </section>
+
+        <section class="list">
+            <h2>Lista de Clientes</h2>
+            <ul>
+                {{card | safe}}
+            </ul>
+        </section>
+    </main>
+</body>
+</html>

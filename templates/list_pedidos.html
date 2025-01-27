@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Pedidos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='list_pedidos.css') }}">
+    
+</head>
+<body>
+    <main>
+        <header class="main-header">
+            <h1>Filtrar de Pedidos</h1>
+        </header>
+
+        <section class="actions">
+            <a href="http://127.0.0.1:5000/list_cli_ped">Cadastrar Pedido</a>
+            <h2>Relatórios Avançados</h2>
+            <div class="report">
+                <label for="total-por-cliente">Total de Pedidos em Reais por Cliente:</label>
+                <input type="date" id="inicio-total-cliente" name="inicio_total_cliente" placeholder="Data Início">
+                <input type="date" id="fim-total-cliente" name="fim_total_cliente" placeholder="Data Fim">
+                <button class="report-button">Gerar Relatório</button>
+            </div>
+            <div class="report">
+                <label for="clientes-acima-500">Clientes com Pedidos Acima de R$500,00:</label>
+                <input type="date" id="inicio-acima-500" name="inicio_acima_500" placeholder="Data Início">
+                <input type="date" id="fim-acima-500" name="fim-acima-500" placeholder="Data Fim">
+                <button class="report-button">Gerar Relatório</button>
+            </div>
+            <div class="report">
+                <label for="top-produtos">Top 10 Produtos Mais Pedidos:</label>
+                <select id="periodo-top-produtos" name="periodo_top_produtos">
+                    <option value="7">Últimos 7 dias</option>
+                    <option value="30">Últimos 30 dias</option>
+                    <option value="60">Últimos 60 dias</option>
+                    <option value="90">Últimos 90 dias</option>
+                </select>
+                <button class="report-button">Gerar Relatório</button>
+            </div>
+            <div class="report">
+                <label for="produtos-nao-pedidos">Produtos Não Pedidos:</label>
+                <select id="periodo-nao-pedidos" name="periodo_nao_pedidos">
+                    <option value="7">Últimos 7 dias</option>
+                    <option value="30">Últimos 30 dias</option>
+                    <option value="60">Últimos 60 dias</option>
+                    <option value="90">Últimos 90 dias</option>
+                </select>
+                <button class="report-button">Gerar Relatório</button>
+            </div>
+        </section>
+
+        <section class="cd">
+            <label>Exibir lista de clientes, ordenando pelo nome</label>
+            <select id="periodo-top-produtos" name="periodo_top_produtos">
+                <option>Crecente</option>
+                <option>Decrecente</option>
+            </select>
+        </section>
+
+        <section class="list">
+            <h2>Lista de Pedidos</h2>
+            <ul>
+                <li>
+                    <h3>Pedido 1</h3>
+                    <ul>
+                        <li>Cliente: ...</li>
+                        <li>Data: ...</li>
+                        <li>Quantidade: ...</li>
+                        <li>Data de Pedido: ...</li>
+                        <li>Valor Total: ...</li>
+                        <li class="bottons">
+                            <button class="edit1">Editar Cliente</button>
+                            <button class="edit2">Editar Produto</button>
+                            <button class="delete">Excluir</button>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <h3>Pedido 2</h3>
+                    <ul>
+                        <li>Cliente: ...</li>
+                        <li>Data: ...</li>
+                        <li>Quantidade: ...</li>
+                        <li>Data de Pedido: ...</li>
+                        <li>Valor Total: ...</li>
+                        <li class="bottons">
+                            <button class="edit1">Editar Cliente</button>
+                            <button class="edit2">Editar Produto</button>
+                            <button class="delete">Excluir</button>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <h3>Pedido 3</h3>
+                    <ul>
+                        <li>Cliente: ...</li>
+                        <li>Data: ...</li>
+                        <li>Quantidade: ...</li>
+                        <li>Data de Pedido: ...</li>
+                        <li>Valor Total: ...</li>
+                        <li class="bottons">
+                            <button class="edit1">Editar Cliente</button>
+                            <button class="edit2">Editar Produto</button>
+                            <button class="delete">Excluir</button>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <h3>Pedido 4</h3>
+                    <ul>
+                        <li>Cliente: ...</li>
+                        <li>Data: ...</li>
+                        <li>Quantidade: ...</li>
+                        <li>Data de Pedido: ...</li>
+                        <li>Valor Total: ...</li>
+                        <li class="bottons">
+                            <button class="edit1">Editar Cliente</button>
+                            <button class="edit2">Editar Produto</button>
+                            <button class="delete">Excluir</button>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+    </main>
+</body>
+</html>

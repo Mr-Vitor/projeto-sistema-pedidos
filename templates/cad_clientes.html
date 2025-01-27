@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Cliente</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='form_clientes.css') }}">
+</head>
+<body>
+    <header class="main-header">
+        <div class="logo">
+            <h1>Cadastrar Cliente</h1>
+        </div>
+    </header>
+
+    <div class="form-container">
+        <form action="{{url_for('cadastrar_clientes')}}" method="post">
+            <label for="cli_nome">Nome do Cliente:</label>
+            <input type="text" id="cli_nome" name="cli_nome" required>
+          
+            <label for="cli_endereco">Endereço:</label>
+            <textarea id="cli_endereco" name="cli_endereco" required></textarea>
+          
+            <label for="cli_email">Email:</label>
+            <input type="email" id="cli_email" name="cli_email" required>
+          
+            <label for="cli_telefone">Telefone:</label>
+            <input type="tel" id="cli_telefone" name="cli_telefone" required>
+          
+            <input type="submit" value="Enviar">
+        </form>
+    </div>
+</body>
+</html>

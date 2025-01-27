@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Produto</title>
+    <link rel="stylesheet" href="c:\Users\elito\Downloads\templates\static\form_clientes.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="logo">
+            <h1>Cadastrar Produto</h1>
+        </div>
+    </header>
+
+    <div class="form-container">
+        <form action="processa_produto.php" method="post">
+            <label for="pro_nome">Nome do Produto:</label>
+            <input type="text" id="pro_nome" name="pro_nome" required>
+          
+            <label for="pro_preco">Preço do Produto:</label>
+            <input type="number" id="pro_preco" name="pro_preco" required>
+          
+            <label for="pro_descricao">Descrição do Produto:</label>
+            <textarea id="pro_descricao" name="pro_descricao" required></textarea>
+          
+            <label for="pro_estoque">Estoque:</label>
+            <input type="number" id="pro_estoque" name="pro_estoque" required>
+
+            <label for="pro_categoria">pro_categoria:</label>
+            <input type="text" id="pro_categoria" name="pro_categoria" required>
+          
+            <input type="submit" value="Enviar">
+        </form>
+    </div>
+</body>
+</html>
