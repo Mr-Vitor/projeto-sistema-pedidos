@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Pedidos</title>
+</head>
+<body>
+    <h1>Lista de Pedidos</h1>
+    <a href="{{ url_for('pedidos.adicionar_pedido') }}">Novo Pedido</a>
+
+    <table border="1">
+        <tr>
+            <th>Cliente</th>
+            <th>Data</th>
+            <th>Valor Total</th>
+            <th>Ações</th>
+        </tr>
+        {% for pedido in pedidos %}
+        <tr>
+            <td>{{ pedido[1] }}</td>
+            <td>{{ pedido[2] }}</td>
+            <td>R$ {{ pedido[3] }}</td>
+            <td>
+                <a href="{{ url_for('pedidos.editar_pedido', id=pedido[0]) }}">Gerenciar</a>
+                <a href="{{ url_for('pedidos.excluir_pedido', id=pedido[0]) }}">Excluir</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

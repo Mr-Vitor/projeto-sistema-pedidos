@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Pedido</title>
+</head>
+<body>
+    <h1>Pedido de {{ pedido[1] }}</h1>
+    <p>Data: {{ pedido[2] }}</p>
+    <p>Valor Total: R$ {{ pedido[3] }}</p>
+
+    <h2>Adicionar Produto</h2>
+    <form method="POST">
+        <select name="produto_id">
+            {% for produto in produtos %}
+            <option value="{{ produto[0] }}">{{ produto[1] }} - R$ {{ produto[2] }}</option>
+            {% endfor %}
+        </select>
+        <input type="number" name="quantidade" placeholder="Quantidade" required>
+        <button type="submit">Adicionar</button>
+    </form>
+
+    <h2>Produtos no Pedido</h2>
+    <ul>
+        {% for item in itens_pedido %}
+        <li>{{ item[1] }} - {{ item[2] }}x - R$ {{ item[3] }}</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ url_for('pedidos.listar_pedidos') }}">Voltar</a>
+</body>
+</html>

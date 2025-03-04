@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Inicial</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bem-vindo à Página Inicial</h1>
+        <p>Olá!</p>
+        <button onclick="location.href='/add_client'">Adicionar Cliente</button>
+        <button onclick="location.href='/add_product'">Adicionar Produto</button>
+        <button onclick="location.href='/add_order'">Adicionar Pedido</button>
+        <button onclick="location.href='/list_clients'">Listar Clientes</button>
+        <button onclick="location.href='/list_products'">Listar Produtos</button>
+        <button onclick="location.href='/list_orders'">Listar Pedidos</button>
+
+</body>
+</html>

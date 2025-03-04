@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Adicionar Cliente</title>
+</head>
+<body>
+    <h1>Adicionar Cliente</h1>
+    <form method="POST">
+        <input type="text" name="nome" placeholder="Nome" required>
+        <input type="email" name="email" placeholder="E-mail" required>
+        <input type="text" name="telefone" placeholder="Telefone">
+        <input type="text" name="endereco" placeholder="Endereço">
+        <button type="submit">Salvar</button>
+    </form>
+    <a href="{{ url_for('clientes.listar_clientes') }}">Voltar</a>
+</body>
+</html>
