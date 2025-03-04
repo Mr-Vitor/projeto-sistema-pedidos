@@ -3,12 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>Lista de Produtos</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <h1>Lista de Produtos</h1>
-    <a href="{{ url_for('produtos.adicionar_produto') }}">Adicionar Produto</a>
     
+    <!-- Formulário de busca -->
+    <form method="GET" action="{{ url_for('produtos.filtrar_produtos') }}">
+        <label>Nome:</label>
+        <input type="text" name="nome" placeholder="Buscar por nome" value="{{ nome or '' }}">
+        
+        <label>Descrição:</label>
+        <input type="text" name="descricao" placeholder="Buscar por descrição" value="{{ descricao or '' }}">
+        
+        <label>Preço Mínimo:</label>
+        <input type="number" step="0.01" name="preco_min" placeholder="R$" value="{{ preco_min or '' }}">
+        
+        <label>Preço Máximo:</label>
+        <input type="number" step="0.01" name="preco_max" placeholder="R$" value="{{ preco_max or '' }}">
+        
+        <label>Estoque Mínimo:</label>
+        <input type="number" name="estoque_min" placeholder="Qtd" value="{{ estoque_min or '' }}">
+        
+        <label>Estoque Máximo:</label>
+        <input type="number" name="estoque_max" placeholder="Qtd" value="{{ estoque_max or '' }}">
+
+        <button type="submit">Buscar</button>
+        <a href="{{ url_for('produtos.listar_produtos') }}">Limpar Filtros</a>
+    </form>
+    
+    <a href="{{ url_for('produtos.adicionar_produto') }}">Adicionar Produto</a>
+
     <table border="1">
         <tr>
             <th>Nome</th>
@@ -30,5 +54,6 @@
         </tr>
         {% endfor %}
     </table>
+    <a href="{{ url_for('index') }}">Voltar</a>
 </body>
 </html>

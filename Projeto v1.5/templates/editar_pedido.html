@@ -23,7 +23,16 @@
     <h2>Produtos no Pedido</h2>
     <ul>
         {% for item in itens_pedido %}
-        <li>{{ item[1] }} - {{ item[2] }}x - R$ {{ item[3] }}</li>
+        <li>
+            {{ item[1] }} - {{ item[2] }}x - R$ {{ item[3] }}
+            <form method="POST" action="{{ url_for('pedidos.atualizar_produto_pedido', pedido_id=pedido[0], produto_id=item[0]) }}">
+                <input type="number" name="quantidade" value="{{ item[2] }}" required>
+                <button type="submit">Atualizar</button>
+            </form>
+            <form method="POST" action="{{ url_for('pedidos.atualizar_produto_pedido', pedido_id=pedido[0], produto_id=item[0]) }}">
+                <button type="submit" name="remover">Remover</button>
+            </form>
+        </li>
         {% endfor %}
     </ul>
 

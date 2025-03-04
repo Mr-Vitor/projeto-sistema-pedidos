@@ -3,12 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Lista de Clientes</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <h1>Lista de Clientes</h1>
-    <a href="{{ url_for('clientes.adicionar_cliente') }}">Adicionar Cliente</a>
     
+    <!-- Formulário de busca -->
+    <form method="GET" action="{{ url_for('clientes.filtrar_clientes') }}">
+        <label>Nome:</label>
+        <input type="text" name="nome" placeholder="Buscar por nome" value="{{ nome or '' }}">
+        
+        <label>Email:</label>
+        <input type="text" name="email" placeholder="Buscar por e-mail" value="{{ email or '' }}">
+        
+        <label>Telefone:</label>
+        <input type="text" name="telefone" placeholder="Buscar por telefone" value="{{ telefone or '' }}">
+        
+        <label>Endereço:</label>
+        <input type="text" name="endereco" placeholder="Buscar por endereço" value="{{ endereco or '' }}">
+
+        <button type="submit">Buscar</button>
+        <a href="{{ url_for('clientes.listar_clientes') }}">Limpar Filtros</a>
+    </form>
+    
+    <a href="{{ url_for('clientes.adicionar_cliente') }}">Adicionar Cliente</a>
+
     <table border="1">
         <tr>
             <th>Nome</th>
@@ -30,5 +48,7 @@
         </tr>
         {% endfor %}
     </table>
+    <a href="{{ url_for('index') }}">Voltar</a>
 </body>
 </html>
+

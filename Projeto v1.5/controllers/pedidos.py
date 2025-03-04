@@ -39,7 +39,7 @@ def adicionar_pedido():
     conn.close()
     return render_template('adicionar_pedido.html', clientes=clientes)
 
-# 📌 Editar Pedido (Adicionar Produtos)
+# 📌 Editar Pedido (Adicionar e Editar Produtos)
 @bp.route('/editar/<int:id>', methods=['GET', 'POST'])
 def editar_pedido(id):
     conn = conectar()
@@ -60,9 +60,19 @@ def editar_pedido(id):
 
         total = preco * quantidade
 
-        # Adiciona o produto ao pedido
-        cursor.execute("INSERT INTO pedidos_produtos (pedido_id, produto_id, quantidade) VALUES (%s, %s, %s)",
-                       (id, produto_id, quantidade))
+        # Verifica se o produto já está no pedido
+        cursor.execute("SELECT quantidade FROM pedidos_produtos WHERE pedido_id = %s AND produto_id = %s", (id, produto_id))
+        existente = cursor.fetchone()
+
+        if existente:
+            # Atualiza a quantidade do produto no pedido
+            nova_quantidade = existente[0] + quantidade
+            cursor.execute("UPDATE pedidos_produtos SET quantidade = %s WHERE pedido_id = %s AND produto_id = %s",
+                           (nova_quantidade, id, produto_id))
+        else:
+            # Adiciona o produto ao pedido
+            cursor.execute("INSERT INTO pedidos_produtos (pedido_id, produto_id, quantidade) VALUES (%s, %s, %s)",
+                           (id, produto_id, quantidade))
 
         # Atualiza o valor total do pedido
         cursor.execute("UPDATE pedidos SET valor_total = valor_total + %s WHERE id = %s", (total, id))
@@ -98,6 +108,67 @@ def editar_pedido(id):
     conn.close()
     return render_template('editar_pedido.html', pedido=pedido, produtos=produtos, itens_pedido=itens_pedido)
 
+# 📌 Atualizar ou Remover Produto do Pedido
+@bp.route('/editar/<int:pedido_id>/produto/<int:produto_id>', methods=['POST'])
+def atualizar_produto_pedido(pedido_id, produto_id):
+    conn = conectar()
+    cursor = conn.cursor()
+
+    if 'remover' in request.form:
+        # Obtém a quantidade do produto antes de remover
+        cursor.execute("SELECT quantidade FROM pedidos_produtos WHERE pedido_id = %s AND produto_id = %s",
+                       (pedido_id, produto_id))
+        quantidade_atual = cursor.fetchone()[0]
+
+        # Atualiza o estoque do produto ao remover
+        cursor.execute("UPDATE produtos SET estoque = estoque + %s WHERE id = %s", (quantidade_atual, produto_id))
+
+        # Remove o produto do pedido
+        cursor.execute("DELETE FROM pedidos_produtos WHERE pedido_id = %s AND produto_id = %s",
+                       (pedido_id, produto_id))
+
+        # Atualiza o valor total do pedido
+        cursor.execute("SELECT preco FROM produtos WHERE id = %s", (produto_id,))
+        preco = cursor.fetchone()[0]
+        total_removido = preco * quantidade_atual
+        cursor.execute("UPDATE pedidos SET valor_total = valor_total - %s WHERE id = %s", (total_removido, pedido_id))
+
+    else:
+        nova_quantidade = int(request.form['quantidade'])
+
+        # Obtém o preço do produto e a quantidade atual no pedido
+        cursor.execute("SELECT preco FROM produtos WHERE id = %s", (produto_id,))
+        preco = cursor.fetchone()[0]
+
+        cursor.execute("SELECT quantidade FROM pedidos_produtos WHERE pedido_id = %s AND produto_id = %s",
+                       (pedido_id, produto_id))
+        quantidade_atual = cursor.fetchone()[0]
+
+        diferenca = nova_quantidade - quantidade_atual
+        total_diferenca = preco * diferenca
+
+        if nova_quantidade == 0:
+            # Remove o produto se a quantidade for zerada
+            cursor.execute("DELETE FROM pedidos_produtos WHERE pedido_id = %s AND produto_id = %s",
+                           (pedido_id, produto_id))
+            cursor.execute("UPDATE produtos SET estoque = estoque + %s WHERE id = %s", (quantidade_atual, produto_id))
+            cursor.execute("UPDATE pedidos SET valor_total = valor_total - %s WHERE id = %s",
+                           (preco * quantidade_atual, pedido_id))
+        else:
+            # Atualiza a quantidade do produto no pedido
+            cursor.execute("UPDATE pedidos_produtos SET quantidade = %s WHERE pedido_id = %s AND produto_id = %s",
+                           (nova_quantidade, pedido_id, produto_id))
+
+            # Atualiza o valor total do pedido
+            cursor.execute("UPDATE pedidos SET valor_total = valor_total + %s WHERE id = %s", (total_diferenca, pedido_id))
+
+            # Atualiza o estoque do produto
+            cursor.execute("UPDATE produtos SET estoque = estoque - %s WHERE id = %s", (diferenca, produto_id))
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return redirect(url_for('pedidos.editar_pedido', id=pedido_id))
 
 # 📌 Excluir Pedido
 @bp.route('/excluir/<int:id>')
@@ -113,3 +184,4 @@ def excluir_pedido(id):
     cursor.close()
     conn.close()
     return redirect(url_for('pedidos.listar_pedidos'))
+

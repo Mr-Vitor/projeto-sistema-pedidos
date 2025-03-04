@@ -70,3 +70,40 @@ def excluir_cliente(id):
     cursor.close()
     conn.close()
     return redirect(url_for('clientes.listar_clientes'))
+
+
+@bp.route('/filtrar', methods=['GET'])
+def filtrar_clientes():
+    filtros = {
+        "nome": request.args.get('nome', '').strip(),
+        "email": request.args.get('email', '').strip(),
+        "telefone": request.args.get('telefone', '').strip(),
+        "endereco": request.args.get('endereco', '').strip()
+    }
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    # Dicionário mapeando os filtros para as condições SQL
+    condicoes_sql = {
+        "nome": "nome LIKE %s",
+        "email": "email LIKE %s",
+        "telefone": "telefone LIKE %s",
+        "endereco": "endereco LIKE %s"
+    }
+
+    # Monta dinamicamente a query com os filtros preenchidos
+    condicoes = [condicoes_sql[chave] for chave, valor in filtros.items() if valor]
+    parametros = [f"%{valor}%" for chave, valor in filtros.items() if valor]
+
+    query = "SELECT id, nome, email, telefone, endereco FROM clientes"
+    if condicoes:
+        query += " WHERE " + " AND ".join(condicoes)
+    query += " ORDER BY nome ASC"
+
+    cursor.execute(query, parametros)
+    clientes = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    return render_template('clientes.html', clientes=clientes, **filtros)
