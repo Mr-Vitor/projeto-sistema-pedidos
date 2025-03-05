@@ -6,7 +6,29 @@
 </head>
 <body>
     <h1>Lista de Pedidos</h1>
-    <a href="{{ url_for('pedidos.adicionar_pedido') }}">Novo Pedido</a>
+
+    <!-- Formulário de busca -->
+    <form method="GET" action="{{ url_for('pedidos.filtrar_pedidos') }}">
+        <label>Cliente:</label>
+        <input type="text" name="cliente" placeholder="Nome do Cliente" value="{{ cliente or '' }}">
+
+        <label>Data Mínima:</label>
+        <input type="date" name="data_min" value="{{ data_min or '' }}">
+        
+        <label>Data Máxima:</label>
+        <input type="date" name="data_max" value="{{ data_max or '' }}">
+        
+        <label>Valor Mínimo:</label>
+        <input type="number" step="0.01" name="valor_min" placeholder="R$" value="{{ valor_min or '' }}">
+        
+        <label>Valor Máximo:</label>
+        <input type="number" step="0.01" name="valor_max" placeholder="R$" value="{{ valor_max or '' }}">
+
+        <button type="submit">Buscar</button>
+        <a href="{{ url_for('pedidos.listar_pedidos') }}">Limpar Filtros</a>
+    </form>
+
+    <a href="{{ url_for('pedidos.adicionar_pedido') }}">Adicionar Pedido</a>
 
     <table border="1">
         <tr>

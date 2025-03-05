@@ -185,3 +185,44 @@ def excluir_pedido(id):
     conn.close()
     return redirect(url_for('pedidos.listar_pedidos'))
 
+@bp.route('/filtrar', methods=['GET'])
+def filtrar_pedidos():
+    filtros = {
+        "cliente": request.args.get('cliente', '').strip(),
+        "data_min": request.args.get('data_min', '').strip(),
+        "data_max": request.args.get('data_max', '').strip(),
+        "valor_min": request.args.get('valor_min', '').strip(),
+        "valor_max": request.args.get('valor_max', '').strip()
+    }
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    # Dicionário mapeando os filtros para as condições SQL
+    condicoes_sql = {
+        "cliente": "c.nome LIKE %s",
+        "data_min": "p.data_pedido >= %s",
+        "data_max": "p.data_pedido <= %s",
+        "valor_min": "p.valor_total >= %s",
+        "valor_max": "p.valor_total <= %s"
+    }
+
+    # Monta dinamicamente a query com os filtros preenchidos
+    condicoes = [condicoes_sql[chave] for chave, valor in filtros.items() if valor]
+    parametros = [f"%{valor}%" if "LIKE" in condicoes_sql[chave] else valor for chave, valor in filtros.items() if valor]
+
+    query = """
+        SELECT p.id, c.nome, p.data_pedido, p.valor_total 
+        FROM pedidos p
+        JOIN clientes c ON p.cliente_id = c.id
+    """
+    if condicoes:
+        query += " WHERE " + " AND ".join(condicoes)
+    query += " ORDER BY p.data_pedido DESC"
+
+    cursor.execute(query, parametros)
+    pedidos = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    return render_template('pedidos.html', pedidos=pedidos, **filtros)

@@ -11,7 +11,7 @@
         <label for="cliente_id">Selecione o Cliente:</label>
         <select name="cliente_id" required>
             {% for cliente in clientes %}
-            <option value="{{ cliente[0] }}">{{ cliente[1] }}</option>
+            <option value="{{ cliente[0] }}">{{ cliente[1] }} - {{ cliente[2] }}</option>
             {% endfor %}
         </select>
         <br><br>
