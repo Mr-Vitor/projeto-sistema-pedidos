@@ -1,12 +1,12 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
-from database import conectar
-import bcrypt
+from werkzeug.security import generate_password_hash
+from models.config import conectar
 
-bp = Blueprint('usuarios', __name__)
+bp = Blueprint('usuarios', url_prefix="/usuarios", template_folder="templates", import_name=__name__)
 
 # 📌 Rota para Adicionar Usuários (Apenas Administradores)
-@bp.route('/usuarios', methods=['GET', 'POST'])
+@bp.route('/', methods=['GET', 'POST'])
 @login_required
 def adicionar_usuario():
     if not current_user.is_admin():
@@ -15,10 +15,11 @@ def adicionar_usuario():
     if request.method == 'POST':
         nome = request.form['nome']
         email = request.form['email']
-        senha = request.form['senha'].encode('utf-8')
+        senha = request.form['senha']
         tipo = request.form['tipo']
 
-        senha_hash = bcrypt.hashpw(senha, bcrypt.gensalt()).decode('utf-8')
+        # Gerar hash da senha
+        senha_hash = generate_password_hash(senha)
 
         conn = conectar()
         cursor = conn.cursor()
@@ -32,6 +33,7 @@ def adicionar_usuario():
         return redirect(url_for('usuarios.adicionar_usuario'))
 
     return render_template('adicionar_usuario.html')
+
 
 @bp.route('/logs')
 @login_required

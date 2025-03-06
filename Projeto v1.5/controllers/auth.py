@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required
+from werkzeug.security import generate_password_hash, check_password_hash
 from models.models import Usuario
 from models.config import conectar
-import bcrypt
 
 bp = Blueprint('auth', url_prefix="/auth", template_folder="templates", import_name=__name__)
 
@@ -11,7 +11,7 @@ bp = Blueprint('auth', url_prefix="/auth", template_folder="templates", import_n
 def login():
     if request.method == 'POST':
         email = request.form['email']
-        senha = request.form['senha'].encode('utf-8')
+        senha = request.form['senha']
 
         conn = conectar()
         cursor = conn.cursor()
@@ -20,10 +20,11 @@ def login():
         cursor.close()
         conn.close()
 
-        if usuario and bcrypt.checkpw(senha, usuario[3].encode('utf-8')):
+        # Verifica se o usuário existe e se a senha está correta
+        if usuario and check_password_hash(usuario[3], senha):
             user = Usuario(*usuario)
             login_user(user)
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('index'))  # Redireciona para a página inicial
 
         flash("E-mail ou senha inválidos", "danger")
 
