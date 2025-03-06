@@ -19,6 +19,9 @@
         h1 {
             color: #333;
         }
+        .container {
+            text-align: center;
+        }
         button {
             padding: 10px 20px;
             margin: 10px;
@@ -33,12 +36,23 @@
     </style>
 </head>
 <body>
-    <h1>Bem-vindo à Página Inicial</h1>
-        <p>Olá!</p>
-        <a href="{{url_for('clientes.listar_clientes')}}"><button>Clientes</button></a>
-        <a href="{{url_for('produtos.listar_produtos')}}"><button>Produtos</button></a>
-        <a href="{{url_for('pedidos.listar_pedidos')}}"><button>Pedidos</button></a>
-        <a href="{{url_for('relatorios.pg_relatorio')}}"><button>Relatórios avançados</button></a>
+    <div class="container">
+        <h1>Bem-vindo à Página Inicial</h1>
+        <p>Olá, {{ current_user.nome }}!</p>
 
+        <!-- Botões visíveis para todos os usuários -->
+        <a href="{{ url_for('clientes.listar_clientes') }}"><button>Clientes</button></a>
+        <a href="{{ url_for('produtos.listar_produtos') }}"><button>Produtos</button></a>
+        <a href="{{ url_for('pedidos.listar_pedidos') }}"><button>Pedidos</button></a>
+        <a href="{{ url_for('relatorios.pg_relatorio') }}"><button>Relatórios Avançados</button></a>
+
+        <!-- Botões visíveis apenas para administradores -->
+        {% if current_user.tipo == 'admin' %}
+            <a href="{{ url_for('usuarios.adicionar_usuario') }}"><button>Cadastrar Usuários</button></a>
+            <a href="{{ url_for('usuarios.listar_logs') }}"><button>Verificar Logs</button></a>
+        {% endif %}
+
+        <a href="{{ url_for('auth.logout') }}"><button>Logout</button></a>
+    </div>
 </body>
 </html>

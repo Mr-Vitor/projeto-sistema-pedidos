@@ -32,7 +32,7 @@ def adicionar_usuario():
         flash("Usuário cadastrado com sucesso!", "success")
         return redirect(url_for('usuarios.adicionar_usuario'))
 
-    return render_template('adicionar_usuario.html')
+    return render_template('usuarios/adicionar_usuario.html')
 
 
 @bp.route('/logs')
@@ -45,7 +45,7 @@ def listar_logs():
     cursor = conn.cursor()
     cursor.execute("""
         SELECT l.id, l.descricao, l.data_hora, u.nome 
-        FROM logs l 
+        FROM log l 
         JOIN usuarios u ON l.usuario_id = u.id
         ORDER BY l.data_hora DESC
     """)
@@ -53,4 +53,4 @@ def listar_logs():
     cursor.close()
     conn.close()
 
-    return render_template('logs.html', logs=logs)
+    return render_template('usuarios/logs.html', logs=logs)
