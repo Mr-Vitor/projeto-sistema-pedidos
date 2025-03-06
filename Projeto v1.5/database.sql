@@ -49,4 +49,4 @@ CREATE TABLE logs (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
-INSERT INTO usuarios (nome, email, senha, tipo) VALUES ('admin', 'admin@email.com' , 'password', 'admin');
+
