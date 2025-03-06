@@ -48,3 +48,5 @@ CREATE TABLE log (
     usuario_id INT,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
+
+INSERT INTO usuarios (nome, email, senha, tipo) VALUES ('admin', 'admin@email.com' , 'password', 'admin');

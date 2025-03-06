@@ -8,6 +8,7 @@ from flask_login import LoginManager, login_required, current_user
 from models.models import Usuario
 from models.config import conectar
 
+
 # Inicializa a aplicação Flask
 app = Flask(__name__)
 app.secret_key = 'chave_secreta_segura'  # Altere para um valor seguro
