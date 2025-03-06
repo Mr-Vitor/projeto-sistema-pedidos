@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Total de Pedidos por Cliente</title>
+</head>
+<body>
+    <h1>Total de Pedidos por Cliente</h1>
+
+    <!-- Formulário de seleção do cliente e intervalo de datas -->
+    <form method="GET" action="{{ url_for('relatorios.total_pedidos_cliente') }}">
+        <label>Selecione o Cliente:</label>
+        <select name="cliente_id" required>
+            {% for cliente in clientes %}
+                <option value="{{ cliente[0] }}" {% if cliente[0] == cliente_id|int %}selected{% endif %}>
+                    {{ cliente[1] }} - {{ cliente[2] }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label>Data Início:</label>
+        <input type="date" name="data_inicio" value="{{ data_inicio or '' }}" required>
+
+        <label>Data Fim:</label>
+        <input type="date" name="data_fim" value="{{ data_fim or '' }}" required>
+
+        <button type="submit">Gerar Relatório</button>
+    </form>
+
+    <h2>Resultado:</h2>
+    {% if total > 0 %}
+        <p>O cliente selecionado fez um total de <strong>R$ {{ total }}</strong> em pedidos neste período.</p>
+    {% else %}
+        <p>Nenhum pedido encontrado para este cliente no período selecionado.</p>
+    {% endif %}
+
+    <br>
+    <a href="{{ url_for('relatorios.pg_relatorio') }}">Voltar aos Relatórios</a>
+</body>
+</html>

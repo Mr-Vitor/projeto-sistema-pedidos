@@ -7,13 +7,24 @@ bp = Blueprint('clientes', url_prefix="/clientes", template_folder="templates", 
 # 📌 Listar Clientes
 @bp.route('/')
 def listar_clientes():
+    ordem = request.args.get('ordem', 'asc').lower()  # Obtém o parâmetro da URL (padrão: asc)
+
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("SELECT id, nome, email, telefone, endereco FROM clientes ORDER BY nome ASC")
+
+    # Verifica se a ordem é válida (ascendente ou descendente)
+    if ordem not in ['asc', 'desc']:
+        ordem = 'asc'
+
+    query = f"SELECT id, nome, email, telefone, endereco FROM clientes ORDER BY nome {ordem}"
+    cursor.execute(query)
+    
     clientes = cursor.fetchall()
     cursor.close()
     conn.close()
-    return render_template('clientes.html', clientes=clientes)
+
+    return render_template('clientes/clientes.html', clientes=clientes, ordem=ordem)
+
 
 # 📌 Adicionar Cliente
 @bp.route('/adicionar', methods=['GET', 'POST'])
@@ -33,7 +44,7 @@ def adicionar_cliente():
         conn.close()
         return redirect(url_for('clientes.listar_clientes'))
 
-    return render_template('adicionar_cliente.html')
+    return render_template('clientes/adicionar_cliente.html')
 
 # 📌 Editar Cliente
 @bp.route('/editar/<int:id>', methods=['GET', 'POST'])
@@ -58,7 +69,7 @@ def editar_cliente(id):
     cliente = cursor.fetchone()
     cursor.close()
     conn.close()
-    return render_template('editar_cliente.html', cliente=cliente)
+    return render_template('clientes/editar_cliente.html', cliente=cliente)
 
 # 📌 Excluir Cliente
 @bp.route('/excluir/<int:id>')
@@ -106,4 +117,4 @@ def filtrar_clientes():
     cursor.close()
     conn.close()
 
-    return render_template('clientes.html', clientes=clientes, **filtros)
+    return render_template('clientes/clientes.html', clientes=clientes, **filtros)

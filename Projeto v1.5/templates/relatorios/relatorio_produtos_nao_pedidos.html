@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Produtos Não Pedidos</title>
+</head>
+<body>
+    <h1>Produtos Não Pedidos nos Últimos {{ dias }} Dias</h1>
+      
+    <!-- Formulário para selecionar o período -->
+    <form method="GET" action="{{ url_for('relatorios.produtos_nao_pedidos') }}">
+        <label>Filtrar por período:</label>
+        <select name="dias" onchange="this.form.submit()">
+            <option value="7" {% if dias == '7' %}selected{% endif %}>Últimos 7 dias</option>
+            <option value="30" {% if dias == '30' %}selected{% endif %}>Últimos 30 dias</option>
+            <option value="60" {% if dias == '60' %}selected{% endif %}>Últimos 60 dias</option>
+            <option value="90" {% if dias == '90' %}selected{% endif %}>Últimos 90 dias</option>
+        </select>
+    </form>
+
+        <h2>Resultado:</h2>
+        {% if produtos %}
+            <table border="1">
+                <tr>
+                    <th>ID do Produto</th>
+                    <th>Nome do Produto</th>
+                </tr>
+                {% for produto in produtos %}
+                <tr>
+                    <td>{{ produto[0] }}</td>
+                    <td>{{ produto[1] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>Não há nenhum produto que não foi pedido no período selecionado.</p>
+        {% endif %}
+        
+        <br>
+        <a href="{{ url_for('relatorios.pg_relatorio') }}">Voltar</a>
+</body>
+</html>

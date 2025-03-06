@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatórios</title>
+</head>
+<body>
+    <h1>Relatórios Avançados</h1>
+
+    <a href="{{url_for('relatorios.total_pedidos_cliente')}}"><button>Total de Pedidos por Cliente</button></a>
+    <a href="{{url_for('relatorios.clientes_acima_500')}}"><button>Clientes com Pedidos Acima de R$500</button></a>
+    <a href="{{url_for('relatorios.top_produtos')}}"><button>Top 10 Produtos Mais Pedidos</button></a>
+    <a href="{{url_for('relatorios.produtos_nao_pedidos')}}"><button>Produtos Não Pedidos</button></a>
+
+    <br>
+    <br>
+    <br>
+
+
+    <a href="{{ url_for('index') }}"><button>Voltar</button></a>
+</body>
+</html>

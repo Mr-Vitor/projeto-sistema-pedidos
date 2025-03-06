@@ -24,8 +24,24 @@
         <button type="submit">Buscar</button>
         <a href="{{ url_for('clientes.listar_clientes') }}">Limpar Filtros</a>
     </form>
+
+    <br>
+
+    <!-- Opção de ordenação -->
+    <form method="GET" action="{{ url_for('clientes.listar_clientes') }}">
+        <label>Ordenar por:</label>
+        <select name="ordem" onchange="this.form.submit()">
+            <option value="asc" {% if ordem == 'asc' %}selected{% endif %}>A - Z</option>
+            <option value="desc" {% if ordem == 'desc' %}selected{% endif %}>Z - A</option>
+        </select>
+    </form>
+
+    <br>
     
     <a href="{{ url_for('clientes.adicionar_cliente') }}">Adicionar Cliente</a>
+
+    <br>
+    <br>
 
     <table border="1">
         <tr>

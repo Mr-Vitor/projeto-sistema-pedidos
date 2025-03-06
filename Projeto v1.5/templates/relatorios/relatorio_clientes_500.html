@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Clientes com Pedidos Acima de R$500,00</title>
+</head>
+<body>
+    <h1>Clientes com Pedidos Acima de R$500,00</h1>
+
+    <!-- Formulário para selecionar o intervalo de datas -->
+    <form method="GET" action="{{ url_for('relatorios.clientes_acima_500') }}">
+        <label>Data Início:</label>
+        <input type="date" name="data_inicio" value="{{ data_inicio or '' }}" required>
+
+        <label>Data Fim:</label>
+        <input type="date" name="data_fim" value="{{ data_fim or '' }}" required>
+
+        <button type="submit">Gerar Relatório</button>
+    </form>
+
+    <h2>Resultado:</h2>
+    {% if clientes %}
+        <table border="1">
+            <tr>
+                <th>Nome</th>
+                <th>Total Gasto (R$)</th>
+            </tr>
+            {% for cliente in clientes %}
+            <tr>
+                <td>{{ cliente[1] }}</td>
+                <td>R$ {{ cliente[2] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Nenhum cliente encontrou acima de R$500,00 no período selecionado.</p>
+    {% endif %}
+
+    <br>
+    <a href="{{ url_for('relatorios.pg_relatorio') }}">Voltar aos Relatórios</a>
+</body>
+</html>

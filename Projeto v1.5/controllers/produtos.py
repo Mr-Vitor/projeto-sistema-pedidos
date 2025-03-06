@@ -7,13 +7,21 @@ bp = Blueprint('produtos', url_prefix="/produtos", template_folder="templates", 
 # 📌 Listar Produtos
 @bp.route('/')
 def listar_produtos():
+    ordem = request.args.get('ordem', 'asc').lower()
+
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("SELECT id, nome, descricao, preco, estoque FROM produtos ORDER BY nome ASC")
+
+    if ordem not in ['asc', 'desc']:
+        ordem = 'asc'
+
+    query = f"SELECT id, nome, descricao, preco, estoque FROM produtos ORDER BY nome {ordem}"
+    cursor.execute(query)
+    
     produtos = cursor.fetchall()
     cursor.close()
     conn.close()
-    return render_template('produtos.html', produtos=produtos)
+    return render_template('produtos/produtos.html', produtos=produtos, ordem=ordem)
 
 # 📌 Adicionar Produto
 @bp.route('/adicionar', methods=['GET', 'POST'])
@@ -33,7 +41,7 @@ def adicionar_produto():
         conn.close()
         return redirect(url_for('produtos.listar_produtos'))
 
-    return render_template('adicionar_produto.html')
+    return render_template('produtos/adicionar_produto.html')
 
 # 📌 Editar Produto
 @bp.route('/editar/<int:id>', methods=['GET', 'POST'])
@@ -58,7 +66,7 @@ def editar_produto(id):
     produto = cursor.fetchone()
     cursor.close()
     conn.close()
-    return render_template('editar_produto.html', produto=produto)
+    return render_template('produtos/editar_produto.html', produto=produto)
 
 # 📌 Excluir Produto e Atualizar Pedidos
 @bp.route('/excluir/<int:id>')
@@ -133,4 +141,4 @@ def filtrar_produtos():
     cursor.close()
     conn.close()
 
-    return render_template('produtos.html', produtos=produtos, **filtros)
+    return render_template('produtos/produtos.html', produtos=produtos, **filtros)

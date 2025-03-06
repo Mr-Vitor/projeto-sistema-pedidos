@@ -7,18 +7,26 @@ bp = Blueprint('pedidos', url_prefix="/pedidos", template_folder="templates", im
 # 📌 Listar Pedidos
 @bp.route('/')
 def listar_pedidos():
+    ordem = request.args.get('ordem','desc').lower()
+
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("""
+    
+    if ordem not in ['asc','desc']:
+        ordem = 'desc'
+
+    query = f"""
         SELECT p.id, c.nome, p.data_pedido, p.valor_total 
         FROM pedidos p
         JOIN clientes c ON p.cliente_id = c.id
-        ORDER BY p.data_pedido DESC
-    """)
+        ORDER BY p.data_pedido {ordem}
+    """
+    cursor.execute(query)
+
     pedidos = cursor.fetchall()
     cursor.close()
     conn.close()
-    return render_template('pedidos.html', pedidos=pedidos)
+    return render_template('pedidos/pedidos.html', pedidos=pedidos, ordem=ordem)
 
 # 📌 Adicionar Pedido
 @bp.route('/adicionar', methods=['GET', 'POST'])
@@ -33,11 +41,11 @@ def adicionar_pedido():
         conn.commit()
         return redirect(url_for('pedidos.editar_pedido', id=pedido_id))
 
-    cursor.execute("SELECT id, nome FROM clientes ORDER BY nome ASC")
+    cursor.execute("SELECT id, nome, email FROM clientes ORDER BY nome ASC")
     clientes = cursor.fetchall()
     cursor.close()
     conn.close()
-    return render_template('adicionar_pedido.html', clientes=clientes)
+    return render_template('pedidos/adicionar_pedido.html', clientes=clientes)
 
 # 📌 Editar Pedido (Adicionar e Editar Produtos)
 @bp.route('/editar/<int:id>', methods=['GET', 'POST'])
@@ -106,7 +114,7 @@ def editar_pedido(id):
 
     cursor.close()
     conn.close()
-    return render_template('editar_pedido.html', pedido=pedido, produtos=produtos, itens_pedido=itens_pedido)
+    return render_template('pedidos/editar_pedido.html', pedido=pedido, produtos=produtos, itens_pedido=itens_pedido)
 
 # 📌 Atualizar ou Remover Produto do Pedido
 @bp.route('/editar/<int:pedido_id>/produto/<int:produto_id>', methods=['POST'])
@@ -225,4 +233,4 @@ def filtrar_pedidos():
     cursor.close()
     conn.close()
 
-    return render_template('pedidos.html', pedidos=pedidos, **filtros)
+    return render_template('pedidos/pedidos.html', pedidos=pedidos, **filtros)
