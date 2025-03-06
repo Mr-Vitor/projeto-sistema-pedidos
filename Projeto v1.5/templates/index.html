@@ -49,7 +49,7 @@
         <!-- Botões visíveis apenas para administradores -->
         {% if current_user.tipo == 'admin' %}
             <a href="{{ url_for('usuarios.adicionar_usuario') }}"><button>Cadastrar Usuários</button></a>
-            <a href="{{ url_for('usuarios.listar_logs') }}"><button>Verificar Logs</button></a>
+            <a href="{{ url_for('logs.listar_logs') }}"><button>Verificar Logs</button></a>
         {% endif %}
 
         <a href="{{ url_for('auth.logout') }}"><button>Logout</button></a>

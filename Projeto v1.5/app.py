@@ -4,7 +4,8 @@ from controllers.produtos import bp as produto
 from controllers.pedidos import bp as pedido
 from controllers.relatorios import bp as relatorio
 from controllers.auth import bp as auth
-from controllers.usuarios import bp as usuarios
+from controllers.usuarios import bp as usuario
+from controllers.logs import bp as log
 from flask_login import LoginManager, login_required, current_user
 from models.models import Usuario
 from models.config import conectar
@@ -38,7 +39,8 @@ app.register_blueprint(produto)
 app.register_blueprint(pedido)
 app.register_blueprint(relatorio)
 app.register_blueprint(auth)
-app.register_blueprint(usuarios)
+app.register_blueprint(usuario)
+app.register_blueprint(log)
 
 # Rota inicial
 @app.route('/')

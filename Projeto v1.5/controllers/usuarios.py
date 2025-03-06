@@ -33,24 +33,3 @@ def adicionar_usuario():
         return redirect(url_for('usuarios.adicionar_usuario'))
 
     return render_template('usuarios/adicionar_usuario.html')
-
-
-@bp.route('/logs')
-@login_required
-def listar_logs():
-    if not current_user.is_admin():
-        return "Acesso negado", 403
-
-    conn = conectar()
-    cursor = conn.cursor()
-    cursor.execute("""
-        SELECT l.id, l.descricao, l.data_hora, u.nome 
-        FROM log l 
-        JOIN usuarios u ON l.usuario_id = u.id
-        ORDER BY l.data_hora DESC
-    """)
-    logs = cursor.fetchall()
-    cursor.close()
-    conn.close()
-
-    return render_template('usuarios/logs.html', logs=logs)

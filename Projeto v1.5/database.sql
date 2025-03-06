@@ -41,7 +41,7 @@ CREATE TABLE usuarios (
     tipo ENUM('admin', 'usuario') DEFAULT 'usuario'
 );
 
-CREATE TABLE log (
+CREATE TABLE logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     descricao TEXT,
     data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
