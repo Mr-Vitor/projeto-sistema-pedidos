@@ -11,3 +11,4 @@ DB_CONFIG = {
 # Função para conectar ao banco de dados
 def conectar():
     return mysql.connector.connect(**DB_CONFIG)
+
