@@ -12,13 +12,15 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             height: 100vh;
             background-color: #000;
             color: white;
+            overflow: auto;
         }
         h1 {
             color: #007BFF;
+            margin-top: 20px;
         }
         table {
             width: 80%;
@@ -46,7 +48,7 @@
         }
         a {
             display: inline-block;
-            margin-top: 20px;
+            margin: 20px 0;
             padding: 10px 20px;
             background-color: #007BFF;
             color: white;
@@ -59,6 +61,7 @@
     </style>
 </head>
 <body>
+    <a href="{{ url_for('index') }}">Voltar</a>
     <h1>Logs do Sistema</h1>
 
     <table>
@@ -81,7 +84,5 @@
         </tr>
         {% endfor %}
     </table>
-
-    <a href="{{ url_for('index') }}">Voltar</a>
 </body>
 </html>
