@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from models.config import conectar
 
@@ -67,8 +67,10 @@ def editar_pedido(id):
         preco, estoque_atual = produto
 
         # Verifica se há estoque suficiente
-        if estoque_atual < quantidade:
-            return f"Erro: Estoque insuficiente para o produto (Disponível: {estoque_atual})"
+    if estoque_atual < quantidade:
+        flash(f"Erro: Estoque insuficiente para o produto (Disponível: {estoque_atual})", "danger")
+        return redirect(url_for('editar_pedido', id=id))
+
 
         # Verifica se o produto já está no pedido
         cursor.execute("SELECT quantidade FROM pedidos_produtos WHERE pedido_id = %s AND produto_id = %s", (id, produto_id))

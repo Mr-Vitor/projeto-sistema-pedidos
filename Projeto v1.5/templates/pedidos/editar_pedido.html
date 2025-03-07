@@ -5,6 +5,16 @@
     <title>Editar Pedido</title>
 </head>
 <body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
     <h1>Pedido de {{ pedido[1] }}</h1>
     <p>Data: {{ pedido[2] }}</p>
     <p>Valor Total: R$ {{ pedido[3] }}</p>
