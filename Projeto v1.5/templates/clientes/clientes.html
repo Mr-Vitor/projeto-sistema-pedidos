@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Lista de Clientes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/clientes.css') }}">
 </head>
 <body>
     <h1>Lista de Clientes</h1>
@@ -20,25 +21,27 @@
         
         <label>Endereço:</label>
         <input type="text" name="endereco" placeholder="Buscar por endereço" value="{{ endereco or '' }}">
-
+        <div>
         <button type="submit">Buscar</button>
         <a href="{{ url_for('clientes.listar_clientes') }}">Limpar Filtros</a>
+        </div>
     </form>
 
     <br>
 
     <!-- Opção de ordenação -->
-    <form method="GET" action="{{ url_for('clientes.listar_clientes') }}">
-        <label>Ordenar por:</label>
-        <select name="ordem" onchange="this.form.submit()">
-            <option value="asc" {% if ordem == 'asc' %}selected{% endif %}>A - Z</option>
-            <option value="desc" {% if ordem == 'desc' %}selected{% endif %}>Z - A</option>
-        </select>
-    </form>
-
+    <div class="ordenar">
+        <form method="GET" action="{{ url_for('clientes.listar_clientes') }}">
+            <label>Ordenar por:</label>
+            <select name="ordem" onchange="this.form.submit()">
+                <option value="asc" {% if ordem == 'asc' %}selected{% endif %}>A - Z</option>
+                <option value="desc" {% if ordem == 'desc' %}selected{% endif %}>Z - A</option>
+            </select>
+        </form>
+    </div>
     <br>
     
-    <a href="{{ url_for('clientes.adicionar_cliente') }}">Adicionar Cliente</a>
+    <a href="{{ url_for('clientes.adicionar_cliente') }}"><button> Adicionar Cliente </button></a>
 
     <br>
     <br>
@@ -63,8 +66,8 @@
             </td>
         </tr>
         {% endfor %}
-    </table>
-    <a href="{{ url_for('index') }}">Voltar</a>
+    </table>    
+        <a class="voltar" href="{{ url_for('index') }}">Voltar</a>
 </body>
 </html>
 
