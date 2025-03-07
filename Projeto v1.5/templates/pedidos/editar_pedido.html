@@ -9,10 +9,6 @@
     <p>Data: {{ pedido[2] }}</p>
     <p>Valor Total: R$ {{ pedido[3] }}</p>
 
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
-
     <h2>Adicionar Produto</h2>
     <form method="POST">
         <input type="hidden" name="cliente_id" value="{{ pedido[0] }}">

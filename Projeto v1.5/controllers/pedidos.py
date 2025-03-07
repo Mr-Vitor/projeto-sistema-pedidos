@@ -51,7 +51,6 @@ def adicionar_pedido():
     conn.close()
     return render_template('pedidos/adicionar_pedido.html', clientes=clientes)
 
-# 📌 Editar Pedido (Adicionar e Editar Produtos)
 @bp.route('/editar/<int:id>', methods=['GET', 'POST'])
 @login_required
 def editar_pedido(id):
@@ -71,8 +70,6 @@ def editar_pedido(id):
         if estoque_atual < quantidade:
             return f"Erro: Estoque insuficiente para o produto (Disponível: {estoque_atual})"
 
-        total = preco * quantidade
-
         # Verifica se o produto já está no pedido
         cursor.execute("SELECT quantidade FROM pedidos_produtos WHERE pedido_id = %s AND produto_id = %s", (id, produto_id))
         existente = cursor.fetchone()
@@ -87,10 +84,11 @@ def editar_pedido(id):
             cursor.execute("INSERT INTO pedidos_produtos (pedido_id, produto_id, quantidade) VALUES (%s, %s, %s)",
                            (id, produto_id, quantidade))
 
-        # Atualiza o valor total do pedido
-        cursor.execute("UPDATE pedidos SET valor_total = valor_total + %s WHERE id = %s", (total, id))
+        # Atualiza o valor total do pedido utilizando a Function MySQL
+        cursor.execute("UPDATE pedidos SET valor_total = calcular_valor_pedido(%s) WHERE id = %s", (id, id))
 
-
+        # Atualiza o estoque do produto
+        cursor.execute("UPDATE produtos SET estoque = estoque - %s WHERE id = %s", (quantidade, produto_id))
 
         conn.commit()
 
@@ -119,6 +117,7 @@ def editar_pedido(id):
     cursor.close()
     conn.close()
     return render_template('pedidos/editar_pedido.html', pedido=pedido, produtos=produtos, itens_pedido=itens_pedido)
+
 
 # 📌 Atualizar ou Remover Produto do Pedido
 @bp.route('/editar/<int:pedido_id>/produto/<int:produto_id>', methods=['POST'])
@@ -174,7 +173,6 @@ def atualizar_produto_pedido(pedido_id, produto_id):
 
             # Atualiza o valor total do pedido
             cursor.execute("UPDATE pedidos SET valor_total = valor_total + %s WHERE id = %s", (total_diferenca, pedido_id))
-
 
 
     conn.commit()
