@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Editar Pedido</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/editar_pedido.css') }}">
 </head>
 <body>
     <h1>Pedido de {{ pedido[1] }}</h1>
@@ -12,13 +11,12 @@
 
     <h2>Adicionar Produto</h2>
     <form method="POST">
-        <input type="hidden" name="cliente_id" value="{{ pedido[0] }}">
         <select name="produto_id">
             {% for produto in produtos %}
-            <option value="{{ produto[0] }}">{{ produto[1] }} - R$ {{ produto[2] }} (Estoque: {{ produto[3] }})</option>
+            <option value="{{ produto[0] }}">{{ produto[1] }} - R$ {{ produto[2] }}</option>
             {% endfor %}
         </select>
-        <input type="number" name="quantidade" placeholder="Quantidade" required min="1">
+        <input type="number" name="quantidade" placeholder="Quantidade" required>
         <button type="submit">Adicionar</button>
     </form>
 
@@ -26,22 +24,18 @@
     <ul>
         {% for item in itens_pedido %}
         <li>
-            <div class="produtos">
-            <div class="pro_desc">
-                {{ item[1] }} <br> {{ item[2] }}x <br> R$ {{ "%.2f"|format(item[2] * item[3]) }}
-            </div>
+            {{ item[1] }} - {{ item[2] }}x - R$ {{ item[3] }}
             <form method="POST" action="{{ url_for('pedidos.atualizar_produto_pedido', pedido_id=pedido[0], produto_id=item[0]) }}">
-                <input type="number" name="quantidade" value="{{ item[2] }}" required min="1">
+                <input type="number" name="quantidade" value="{{ item[2] }}" required>
                 <button type="submit">Atualizar</button>
             </form>
             <form method="POST" action="{{ url_for('pedidos.atualizar_produto_pedido', pedido_id=pedido[0], produto_id=item[0]) }}">
                 <button type="submit" name="remover">Remover</button>
             </form>
-        </div>
         </li>
         {% endfor %}
     </ul>
 
-    <a class="voltar" href="{{ url_for('pedidos.listar_pedidos') }}">Voltar</a>
+    <a href="{{ url_for('pedidos.listar_pedidos') }}">Voltar</a>
 </body>
 </html>
