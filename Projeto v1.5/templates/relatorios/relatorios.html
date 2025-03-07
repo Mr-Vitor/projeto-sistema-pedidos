@@ -2,21 +2,62 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Relatórios</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #000;
+            color: white;
+            padding: 20px;
+        }
+        h1 {
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+        .button-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        a {
+            text-decoration: none;
+        }
+        .back-button {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <h1>Relatórios Avançados</h1>
 
-    <a href="{{url_for('relatorios.total_pedidos_cliente')}}"><button>Total de Pedidos por Cliente</button></a>
-    <a href="{{url_for('relatorios.clientes_acima_500')}}"><button>Clientes com Pedidos Acima de R$500</button></a>
-    <a href="{{url_for('relatorios.top_produtos')}}"><button>Top 10 Produtos Mais Pedidos</button></a>
-    <a href="{{url_for('relatorios.produtos_nao_pedidos')}}"><button>Produtos Não Pedidos</button></a>
+    <div class="button-container">
+        <a href="{{url_for('relatorios.total_pedidos_cliente')}}"><button>Total de Pedidos por Cliente</button></a>
+        <a href="{{url_for('relatorios.clientes_acima_500')}}"><button>Clientes com Pedidos Acima de R$500</button></a>
+        <a href="{{url_for('relatorios.top_produtos')}}"><button>Top 10 Produtos Mais Pedidos</button></a>
+        <a href="{{url_for('relatorios.produtos_nao_pedidos')}}"><button>Produtos Não Pedidos</button></a>
+    </div>
 
-    <br>
-    <br>
-    <br>
-
-
-    <a href="{{ url_for('index') }}"><button>Voltar</button></a>
+    <a href="{{ url_for('index') }}" class="back-button"><button>Voltar</button></a>
 </body>
 </html>

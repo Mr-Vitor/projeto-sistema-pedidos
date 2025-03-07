@@ -2,7 +2,82 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Total de Pedidos por Cliente</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: auto;
+            background-color: #000;
+            color: white;
+            padding: 20px;
+        }
+        h1 {
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+        form {
+            background-color: #111;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 123, 255, 0.5);
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #007BFF;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #007BFF;
+            border-radius: 5px;
+            background-color: #222;
+            color: white;
+        }
+        button {
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
     <h1>Total de Pedidos por Cliente</h1>
@@ -28,13 +103,14 @@
     </form>
 
     <h2>Resultado:</h2>
-    {% if total > 0 %}
-        <p>O cliente selecionado fez um total de <strong>R$ {{ total }}</strong> em pedidos neste período.</p>
-    {% else %}
-        <p>Nenhum pedido encontrado para este cliente no período selecionado.</p>
-    {% endif %}
+    <div class="result">
+        {% if total > 0 %}
+            <p>O cliente selecionado fez um total de <strong>R$ {{ total }}</strong> em pedidos neste período.</p>
+        {% else %}
+            <p>Nenhum pedido encontrado para este cliente no período selecionado.</p>
+        {% endif %}
+    </div>
 
-    <br>
     <a href="{{ url_for('relatorios.pg_relatorio') }}">Voltar aos Relatórios</a>
 </body>
 </html>

@@ -2,7 +2,9 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adicionar Usuário</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/clientes.css') }}">
 </head>
 <body>
     <h1>Adicionar Novo Usuário</h1>
@@ -38,7 +40,7 @@
         
         <label>Tipo:</label>
         <select name="tipo">
-            <option value="">  </option>
+            <option value=""></option>
             <option value="usuario">Usuário</option>
             <option value="admin">Administrador</option>
         </select>
@@ -50,6 +52,7 @@
     <br>
 
     <!-- Opção de ordenação -->
+<div class="ordenar">
     <form method="GET" action="{{ url_for('usuarios.adicionar_usuario') }}">
         <label>Ordenar por:</label>
         <select name="ordem" onchange="this.form.submit()">
@@ -57,13 +60,14 @@
             <option value="desc" {% if ordem == 'desc' %}selected{% endif %}>Z - A</option>
         </select>
     </form>
+</div>
 
-    <table border="1">
+    <table>
         <tr>
             <th>Nome</th>
             <th>Email</th>
             <th>Tipo</th>
-
+            <th>Ações</th>
         </tr>
         {% for usuario in usuarios %}
         <tr>
@@ -78,6 +82,6 @@
         {% endfor %}
     </table>
 
-    <a href="{{ url_for('index') }}">Voltar</a>
+    <a class="voltar" href="{{ url_for('index') }}">Voltar</a>
 </body>
 </html>

@@ -2,7 +2,106 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clientes com Pedidos Acima de R$500,00</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: auto;
+            background-color: #000;
+            color: white;
+            padding: 20px;
+        }
+        h1 {
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+        form {
+            background-color: #111;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 123, 255, 0.5);
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #007BFF;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #007BFF;
+            border-radius: 5px;
+            background-color: #222;
+            color: white;
+        }
+        button {
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #111;
+            box-shadow: 0px 0px 10px rgba(0, 123, 255, 0.5);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #007BFF;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #222;
+        }
+        tr:hover {
+            background-color: #333;
+        }
+        .result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
     <h1>Clientes com Pedidos Acima de R$500,00</h1>
@@ -19,22 +118,24 @@
     </form>
 
     <h2>Resultado:</h2>
-    {% if clientes %}
-        <table border="1">
-            <tr>
-                <th>Nome</th>
-                <th>Total Gasto (R$)</th>
-            </tr>
-            {% for cliente in clientes %}
-            <tr>
-                <td>{{ cliente[1] }}</td>
-                <td>R$ {{ cliente[2] }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <p>Nenhum cliente encontrou acima de R$500,00 no período selecionado.</p>
-    {% endif %}
+    <div class="result">
+        {% if clientes %}
+            <table>
+                <tr>
+                    <th>Nome</th>
+                    <th>Total Gasto (R$)</th>
+                </tr>
+                {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente[1] }}</td>
+                    <td>R$ {{ cliente[2] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>Nenhum cliente encontrou acima de R$500,00 no período selecionado.</p>
+        {% endif %}
+    </div>
 
     <br>
     <a href="{{ url_for('relatorios.pg_relatorio') }}">Voltar aos Relatórios</a>
