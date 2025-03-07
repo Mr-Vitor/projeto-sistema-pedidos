@@ -20,7 +20,7 @@
         }
         h1 {
             color: #007BFF;
-            margin-top: 20px;
+            margin-top: 60px; /* Ajustado para dar espaço ao botão fixo */
         }
         table {
             width: 80%;
@@ -47,13 +47,16 @@
             background-color: #333;
         }
         a {
+            position: fixed; /* Posição fixa */
+            top: 20px; /* Distância do topo */
+            left: 20px; /* Distância da esquerda */
             display: inline-block;
-            margin: 20px 0;
             padding: 10px 20px;
             background-color: #007BFF;
             color: white;
             text-decoration: none;
             border-radius: 5px;
+            z-index: 1000; /* Para garantir que fique acima de outros elementos */
         }
         a:hover {
             background-color: #0056b3;
