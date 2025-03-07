@@ -100,7 +100,7 @@ def produtos_nao_pedidos():
     cursor = conn.cursor()
 
     query = """
-        SELECT pr.id, pr.nome 
+        SELECT pr.id, pr.nome, pr.descricao 
         FROM produtos pr
         WHERE pr.id NOT IN (
             SELECT DISTINCT pp.produto_id

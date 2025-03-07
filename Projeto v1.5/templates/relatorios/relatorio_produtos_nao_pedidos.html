@@ -109,13 +109,13 @@
         {% if produtos %}
             <table>
                 <tr>
-                    <th>ID do Produto</th>
                     <th>Nome do Produto</th>
+                    <th>Descrição</th>
                 </tr>
                 {% for produto in produtos %}
                 <tr>
-                    <td>{{ produto[0] }}</td>
                     <td>{{ produto[1] }}</td>
+                    <td>{{ produto[2] }}</td>
                 </tr>
                 {% endfor %}
             </table>
