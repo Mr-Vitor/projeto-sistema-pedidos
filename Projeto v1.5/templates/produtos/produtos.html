@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Lista de Produtos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/clientes.css') }}">
 </head>
 <body>
     <h1>Lista de Produtos</h1>
@@ -34,6 +35,7 @@
     <br>
 
     <!-- Opção de ordenação -->
+    <div class="ordenar">
     <form method="GET" action="{{ url_for('produtos.listar_produtos') }}">
         <label>Ordenar por:</label>
         <select name="ordem" onchange="this.form.submit()">
@@ -41,11 +43,13 @@
             <option value="desc" {% if ordem == 'desc' %}selected{% endif %}>Z - A</option>
         </select>
     </form>
-
+    </div>
     <br>
     
-    <a href="{{ url_for('produtos.adicionar_produto') }}">Adicionar Produto</a>
-
+    <a href="{{ url_for('produtos.adicionar_produto') }}"><button> Adicionar Produto </button></a>
+    <br>
+    <br>
+    
     <table border="1">
         <tr>
             <th>Nome</th>
@@ -67,6 +71,6 @@
         </tr>
         {% endfor %}
     </table>
-    <a href="{{ url_for('index') }}">Voltar</a>
+    <a class="voltar" href="{{ url_for('index') }}">Voltar</a>
 </body>
 </html>
