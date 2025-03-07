@@ -28,7 +28,7 @@ def login():
 
         flash("E-mail ou senha inválidos", "danger")
 
-    return render_template('login.html')
+    return render_template('usuarios/login.html')
 
 # 📌 Logout
 @bp.route('/logout')

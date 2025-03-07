@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
+from flask_login import login_required, current_user
 from models.config import conectar
 
 # Criando um Blueprint para as rotas
@@ -6,6 +7,7 @@ bp = Blueprint('pedidos', url_prefix="/pedidos", template_folder="templates", im
 
 # 📌 Listar Pedidos
 @bp.route('/')
+@login_required
 def listar_pedidos():
     ordem = request.args.get('ordem','desc').lower()
 
@@ -30,13 +32,15 @@ def listar_pedidos():
 
 # 📌 Adicionar Pedido
 @bp.route('/adicionar', methods=['GET', 'POST'])
+@login_required
 def adicionar_pedido():
     conn = conectar()
     cursor = conn.cursor()
 
     if request.method == 'POST':
         cliente_id = request.form['cliente_id']
-        cursor.execute("INSERT INTO pedidos (cliente_id, valor_total) VALUES (%s, 0)", (cliente_id,))
+        usuario_id = current_user.id
+        cursor.execute("INSERT INTO pedidos (cliente_id, usuario_id, valor_total) VALUES (%s, %s, 0)", (cliente_id, usuario_id))
         pedido_id = cursor.lastrowid
         conn.commit()
         return redirect(url_for('pedidos.editar_pedido', id=pedido_id))
@@ -49,6 +53,7 @@ def adicionar_pedido():
 
 # 📌 Editar Pedido (Adicionar e Editar Produtos)
 @bp.route('/editar/<int:id>', methods=['GET', 'POST'])
+@login_required
 def editar_pedido(id):
     conn = conectar()
     cursor = conn.cursor()
@@ -85,8 +90,7 @@ def editar_pedido(id):
         # Atualiza o valor total do pedido
         cursor.execute("UPDATE pedidos SET valor_total = valor_total + %s WHERE id = %s", (total, id))
 
-        # Atualiza o estoque do produto
-        cursor.execute("UPDATE produtos SET estoque = estoque - %s WHERE id = %s", (quantidade, produto_id))
+
 
         conn.commit()
 
@@ -118,6 +122,7 @@ def editar_pedido(id):
 
 # 📌 Atualizar ou Remover Produto do Pedido
 @bp.route('/editar/<int:pedido_id>/produto/<int:produto_id>', methods=['POST'])
+@login_required
 def atualizar_produto_pedido(pedido_id, produto_id):
     conn = conectar()
     cursor = conn.cursor()
@@ -170,8 +175,7 @@ def atualizar_produto_pedido(pedido_id, produto_id):
             # Atualiza o valor total do pedido
             cursor.execute("UPDATE pedidos SET valor_total = valor_total + %s WHERE id = %s", (total_diferenca, pedido_id))
 
-            # Atualiza o estoque do produto
-            cursor.execute("UPDATE produtos SET estoque = estoque - %s WHERE id = %s", (diferenca, produto_id))
+
 
     conn.commit()
     cursor.close()
@@ -180,6 +184,7 @@ def atualizar_produto_pedido(pedido_id, produto_id):
 
 # 📌 Excluir Pedido
 @bp.route('/excluir/<int:id>')
+@login_required
 def excluir_pedido(id):
     conn = conectar()
     cursor = conn.cursor()
@@ -194,6 +199,7 @@ def excluir_pedido(id):
     return redirect(url_for('pedidos.listar_pedidos'))
 
 @bp.route('/filtrar', methods=['GET'])
+@login_required
 def filtrar_pedidos():
     filtros = {
         "cliente": request.args.get('cliente', '').strip(),

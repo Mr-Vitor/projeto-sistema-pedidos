@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
+from flask_login import login_required
 from models.config import conectar
 
 # Criando um Blueprint para as rotas
@@ -6,11 +7,13 @@ bp = Blueprint('relatorios', url_prefix="/relatorios", template_folder="template
 
 # 📌 Botões de Relatorios
 @bp.route('/', methods=['GET', 'POST'])
+@login_required
 def pg_relatorio():
     return render_template('relatorios/relatorios.html')
 
 
 @bp.route('/total_pedidos_cliente', methods=['GET'])
+@login_required
 def total_pedidos_cliente():
     cliente_id = request.args.get('cliente_id', '')
     data_inicio = request.args.get('data_inicio', '')
@@ -37,6 +40,7 @@ def total_pedidos_cliente():
     return render_template('relatorios/relatorio_total_pedidos.html', total=total,clientes=clientes, cliente_id=cliente_id, data_inicio=data_inicio, data_fim=data_fim)
 
 @bp.route('/clientes_acima_500', methods=['GET'])
+@login_required
 def clientes_acima_500():
     data_inicio = request.args.get('data_inicio', '')
     data_fim = request.args.get('data_fim', '')
@@ -62,6 +66,7 @@ def clientes_acima_500():
     return render_template('relatorios/relatorio_clientes_500.html', clientes=clientes, data_inicio=data_inicio, data_fim=data_fim)
 
 @bp.route('/top_produtos', methods=['GET'])
+@login_required
 def top_produtos():
     dias = request.args.get('dias', '7')  # Padrão: últimos 7 dias
 
@@ -87,6 +92,7 @@ def top_produtos():
     return render_template('relatorios/relatorio_top_produtos.html', produtos=produtos, dias=dias)
 
 @bp.route('/produtos_nao_pedidos', methods=['GET'])
+@login_required
 def produtos_nao_pedidos():
     dias = request.args.get('dias', '7')  # Padrão: últimos 7 dias
 

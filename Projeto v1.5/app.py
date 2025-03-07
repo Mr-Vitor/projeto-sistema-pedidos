@@ -9,11 +9,11 @@ from controllers.logs import bp as log
 from flask_login import LoginManager, login_required, current_user
 from models.models import Usuario
 from models.config import conectar
+from add_admin import cria_adm  
 
 
-# Inicializa a aplicação Flask
 app = Flask(__name__)
-app.secret_key = 'chave_secreta_segura'  # Altere para um valor seguro
+app.secret_key = 'Trabalho_de_hugoat' 
 
 # Configuração do Flask-Login
 login_manager = LoginManager()
@@ -42,12 +42,15 @@ app.register_blueprint(auth)
 app.register_blueprint(usuario)
 app.register_blueprint(log)
 
-# Rota inicial
+
+cria_adm()
+
+
 @app.route('/')
 @login_required
 def index():
     return render_template('index.html')
 
-# Executa o servidor Flask
+
 if __name__ == '__main__':
     app.run(debug=True)

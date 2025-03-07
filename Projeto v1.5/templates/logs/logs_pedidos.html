@@ -13,6 +13,8 @@
             <th>Descrição</th>
             <th>Data/Hora</th>
             <th>Usuário</th>
+            <th>Cliente</th>
+            <th>ID do pedido</th>
         </tr>
         {% for log in logs %}
         <tr>
@@ -20,6 +22,8 @@
             <td>{{ log[1] }}</td>
             <td>{{ log[2] }}</td>
             <td>{{ log[3] }}</td>
+            <td>{{ log[4] }}</td>
+            <td>{{ log[5] }}</td>
         </tr>
         {% endfor %}
     </table>

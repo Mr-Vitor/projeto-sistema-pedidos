@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
+from flask_login import login_required
 from models.config import conectar
 
 # Criando um Blueprint para as rotas
@@ -6,6 +7,7 @@ bp = Blueprint('produtos', url_prefix="/produtos", template_folder="templates", 
 
 # 📌 Listar Produtos
 @bp.route('/')
+@login_required
 def listar_produtos():
     ordem = request.args.get('ordem', 'asc').lower()
 
@@ -25,6 +27,7 @@ def listar_produtos():
 
 # 📌 Adicionar Produto
 @bp.route('/adicionar', methods=['GET', 'POST'])
+@login_required
 def adicionar_produto():
     if request.method == 'POST':
         nome = request.form['nome']
@@ -45,6 +48,7 @@ def adicionar_produto():
 
 # 📌 Editar Produto
 @bp.route('/editar/<int:id>', methods=['GET', 'POST'])
+@login_required
 def editar_produto(id):
     conn = conectar()
     cursor = conn.cursor()
@@ -70,6 +74,7 @@ def editar_produto(id):
 
 # 📌 Excluir Produto e Atualizar Pedidos
 @bp.route('/excluir/<int:id>')
+@login_required
 def excluir_produto(id):
     conn = conectar()
     cursor = conn.cursor()
@@ -103,6 +108,7 @@ def excluir_produto(id):
 
 
 @bp.route('/filtrar', methods=['GET'])
+@login_required
 def filtrar_produtos():
     filtros = {
         "nome": request.args.get('nome', '').strip(),

@@ -41,11 +41,15 @@ CREATE TABLE usuarios (
     tipo ENUM('admin', 'usuario') DEFAULT 'usuario'
 );
 
-CREATE TABLE logs (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    descricao TEXT,
+CREATE TABLE IF NOT EXISTS logs_pedidos (
+    id_log INT AUTO_INCREMENT PRIMARY KEY,
+    operacao ENUM('INSERT', 'UPDATE', 'DELETE') NOT NULL,
+    id_pedido INT NOT NULL,
+    id_cliente INT NOT NULL,
+    usuario_id INT NOT NULL,
     data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    usuario_id INT,
+    FOREIGN KEY (id_pedido) REFERENCES pedidos(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id) ON DELETE CASCADE,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 

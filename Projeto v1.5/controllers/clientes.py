@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
+from flask_login import login_required
 from models.config import conectar
 
 # Criando um Blueprint para as rotas
@@ -6,6 +7,7 @@ bp = Blueprint('clientes', url_prefix="/clientes", template_folder="templates", 
 
 # 📌 Listar Clientes
 @bp.route('/')
+@login_required
 def listar_clientes():
     ordem = request.args.get('ordem', 'asc').lower()  # Obtém o parâmetro da URL (padrão: asc)
 
@@ -28,6 +30,7 @@ def listar_clientes():
 
 # 📌 Adicionar Cliente
 @bp.route('/adicionar', methods=['GET', 'POST'])
+@login_required
 def adicionar_cliente():
     if request.method == 'POST':
         nome = request.form['nome']
@@ -48,6 +51,7 @@ def adicionar_cliente():
 
 # 📌 Editar Cliente
 @bp.route('/editar/<int:id>', methods=['GET', 'POST'])
+@login_required
 def editar_cliente(id):
     conn = conectar()
     cursor = conn.cursor()
@@ -73,6 +77,7 @@ def editar_cliente(id):
 
 # 📌 Excluir Cliente
 @bp.route('/excluir/<int:id>')
+@login_required
 def excluir_cliente(id):
     conn = conectar()
     cursor = conn.cursor()
@@ -84,6 +89,7 @@ def excluir_cliente(id):
 
 
 @bp.route('/filtrar', methods=['GET'])
+@login_required
 def filtrar_clientes():
     filtros = {
         "nome": request.args.get('nome', '').strip(),

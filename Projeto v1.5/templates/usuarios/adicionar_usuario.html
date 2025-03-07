@@ -26,6 +26,58 @@
         <button type="submit">Salvar</button>
     </form>
 
+    <h1>Lista de Usuários</h1>
+    
+    <!-- Formulário de busca -->
+    <form method="GET" action="{{ url_for('usuarios.filtrar_usuario') }}">
+        <label>Nome:</label>
+        <input type="text" name="nome" placeholder="Buscar por nome" value="{{ nome or '' }}">
+        
+        <label>Email:</label>
+        <input type="text" name="email" placeholder="Buscar por e-mail" value="{{ email or '' }}">
+        
+        <label>Tipo:</label>
+        <select name="tipo">
+            <option value="">  </option>
+            <option value="usuario">Usuário</option>
+            <option value="admin">Administrador</option>
+        </select>
+
+        <button type="submit">Buscar</button>
+        <a href="{{ url_for('usuarios.adicionar_usuario') }}">Limpar Filtros</a>
+    </form>
+
+    <br>
+
+    <!-- Opção de ordenação -->
+    <form method="GET" action="{{ url_for('usuarios.adicionar_usuario') }}">
+        <label>Ordenar por:</label>
+        <select name="ordem" onchange="this.form.submit()">
+            <option value="asc" {% if ordem == 'asc' %}selected{% endif %}>A - Z</option>
+            <option value="desc" {% if ordem == 'desc' %}selected{% endif %}>Z - A</option>
+        </select>
+    </form>
+
+    <table border="1">
+        <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Tipo</th>
+
+        </tr>
+        {% for usuario in usuarios %}
+        <tr>
+            <td>{{ usuario[1] }}</td>
+            <td>{{ usuario[2] }}</td>
+            <td>{{ usuario[3] }}</td>
+            <td>
+                <a href="{{ url_for('usuarios.editar_usuario', id=usuario[0]) }}">Editar</a>
+                <a href="{{ url_for('usuarios.excluir_usuario', id=usuario[0]) }}">Excluir</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
     <a href="{{ url_for('index') }}">Voltar</a>
 </body>
 </html>

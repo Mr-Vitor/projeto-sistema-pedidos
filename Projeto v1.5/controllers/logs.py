@@ -6,7 +6,7 @@ from models.config import conectar
 # Criando um Blueprint para as rotas
 bp = Blueprint('logs', url_prefix="/logs", template_folder="templates", import_name=__name__)
 
-# 📌 Logs
+# 📌 Logs de Pedidos
 @bp.route('/')
 @login_required
 def listar_logs():
@@ -15,14 +15,20 @@ def listar_logs():
 
     conn = conectar()
     cursor = conn.cursor()
+
+    # Consulta ajustada para logs de pedidos
     cursor.execute("""
-        SELECT l.id, l.descricao, l.data_hora, u.nome 
-        FROM logs l 
-        JOIN usuarios u ON l.usuario_id = u.id
-        ORDER BY l.data_hora DESC
+        SELECT lp.id_log, lp.operacao, lp.data_hora, u.nome AS usuario, 
+                c.nome AS cliente, p.id AS pedido_id
+        FROM logs_pedidos lp
+        JOIN usuarios u ON lp.usuario_id = u.id
+        JOIN clientes c ON lp.id_cliente = c.id
+        LEFT JOIN pedidos p ON lp.id_pedido = p.id 
+        ORDER BY lp.data_hora DESC;
     """)
     logs = cursor.fetchall()
+
     cursor.close()
     conn.close()
 
-    return render_template('usuarios/logs.html', logs=logs)
+    return render_template('logs/logs_pedidos.html', logs=logs)
